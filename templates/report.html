@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <h3 class="mb-4">📑 รายงานข้อมูลวัว</h3>
+
+  <!-- ฟอร์มเลือกวันที่ -->
+  <form method="post" class="row g-3 mb-4">
+    <div class="col-auto">
+      <label>จากวันที่</label>
+      <input type="date" name="start_date" value="{{ start_date or '' }}" class="form-control">
+    </div>
+    <div class="col-auto">
+      <label>ถึงวันที่</label>
+      <input type="date" name="end_date" value="{{ end_date or '' }}" class="form-control">
+    </div>
+    <div class="col-auto align-self-end">
+      <button type="submit" class="btn btn-primary">ค้นหา</button>
+    </div>
+  </form>
+
+  <!-- ตารางข้อมูล -->
+  <table class="table table-bordered table-striped align-middle">
+    <thead class="table-success">
+      <tr>
+        <th>แท็ก</th>
+        <th>ชื่อ</th>
+        <th>เพศ</th>
+        <th>พันธุ์</th>
+        <th>อุณหภูมิ (°C)</th>
+        <th>สถานะ</th>
+        <th>เวลา</th>
+        <th>รูปภาพ</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cow in cows %}
+      <tr>
+        <td>{{ cow.rfid_tag or '-' }}</td>
+        <td>{{ cow.name or '-' }}</td>
+        <td>{{ cow.gender or '-' }}</td>
+        <td>{{ cow.breed or '-' }}</td>
+        <td>{{ "%.2f"|format(cow.temperature) }}</td>
+        <td>
+          {% if cow.status == "สูง" %}
+            <span class="badge bg-danger">สูง</span>
+          {% else %}
+            <span class="badge bg-success">ปกติ</span>
+          {% endif %}
+        </td>
+        <td>{{ cow.timestamp }}</td>
+        <td>
+          {% if cow.image_path %}
+            <img src="{{ url_for('static', filename=cow.image_path.split('static/')[-1]) }}" alt="รูปวัว" width="100">
+          {% else %}
+            -
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- สรุป -->
+  <div class="mt-3">
+    <p>🐮 จำนวนวัวอุณหภูมิปกติ: <strong>{{ count_normal }}</strong></p>
+    <p>🔥 จำนวนวัวอุณหภูมิสูง: <strong>{{ count_high }}</strong></p>
+  </div>
+
+  <!-- ปุ่มดาวน์โหลด -->
+  <div class="mt-3">
+    <a href="{{ url_for('download_xlsx') }}" class="btn btn-success">⬇ ดาวน์โหลด Excel</a>
+    <a href="{{ url_for('download_pdf') }}" class="btn btn-danger">⬇ ดาวน์โหลด PDF</a>
+  </div>
+</div>
+{% endblock %}

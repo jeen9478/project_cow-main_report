@@ -1,0 +1,108 @@
+/* ======================
+   Global layout
+====================== */
+:root{
+  --sidebar-w: 260px;
+  --brand-grad-top: #4e73df;     /* ฟ้าอมน้ำเงิน */
+  --brand-grad-bot: #224abe;     /* กรมท่า */
+  --surface: #f5f7fb;            /* พื้นหลังจอ */
+  --text-soft: #6b7280;          /* เทาอ่านง่าย */
+  --active: #1cc88a;             /* เขียวพาสเทล (แสดง active) */
+  --hover-alpha: .16;
+  --radius: 12px;
+}
+
+*{ box-sizing: border-box; }
+body{ background: var(--surface); margin:0; font-family: system-ui, "Segoe UI", Roboto, Arial, sans-serif; }
+
+/* โครงสองคอลัมน์ */
+.layout{ display:flex; min-height:100vh; }
+.content{ flex:1; padding:22px; }
+
+/* ======================
+   Sidebar (โทนสบายตา)
+====================== */
+.sidebar{
+  width: var(--sidebar-w);
+  background: linear-gradient(180deg, var(--brand-grad-top), var(--brand-grad-bot));
+  color: #fff;
+  position: sticky; top:0; height:100vh;
+  padding: 18px 12px;
+  box-shadow: 0 6px 24px rgba(34,74,190,.25);
+}
+
+/* โลโก้/ชื่อระบบ */
+.brand{
+  display:flex; align-items:center; gap:10px;
+  font-weight:700; letter-spacing:.2px;
+  padding: 6px 10px 12px;
+  margin: 4px 6px 12px;
+  border-bottom: 1px solid rgba(255,255,255,.14);
+  color:#f3f6ff;
+}
+
+/* ลิงก์เมนู */
+.sidebar a{
+  display:flex; align-items:center; gap:12px;
+  text-decoration: none;
+  color: #eaf2ff;
+  padding: 10px 14px;
+  margin: 6px 6px;
+  border-radius: var(--radius);
+  transition: transform .15s ease, background-color .2s ease, color .2s ease;
+  font-weight: 500;
+  line-height: 1.1;
+  opacity: .95;
+}
+
+.sidebar a i{ opacity: .95; }
+
+.sidebar a:hover{
+  background: rgba(255,255,255, var(--hover-alpha));
+  color: #fff;
+  transform: translateX(4px);
+}
+
+/* สถานะ active */
+.sidebar a.active{
+  background: rgba(255,255,255,.22);
+  outline: 2px solid rgba(255,255,255,.22);
+  color:#fff;
+  box-shadow: 0 6px 14px rgba(0,0,0,.12) inset, 0 4px 10px rgba(0,0,0,.12);
+}
+
+/* ปุ่มออกจากระบบให้ดูเบาลง */
+.sidebar a[href*="logout"]{
+  margin-top: 8px;
+  color: #e7f6ff;
+  opacity: .85;
+}
+
+/* ======================
+   Topbar (มือถือ)
+====================== */
+.topbar{ display:flex; justify-content:flex-end; align-items:center; gap:12px; margin-bottom:12px; }
+@media (max-width: 992px){
+  .sidebar{ position:fixed; left:-280px; transition: left .25s ease; z-index:1040; }
+  .sidebar.open{ left:0; }
+  .content{ padding-top:70px; }
+  .topbar{ position:fixed; left:0; right:0; top:0; background:#fff; padding:10px 16px;
+           box-shadow:0 2px 10px rgba(0,0,0,.06); }
+}
+
+/* ======================
+   การ์ด/กริดข้อมูล
+====================== */
+.card-img-top{ border-radius:10px; max-height:200px; object-fit:cover; }
+.grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:18px; }
+
+/* ป้ายชื่อผู้ใช้ */
+.badge.text-bg-primary{
+  background: #e8eefc; color:#1f3a93; border:1px solid #d7e2ff;
+  font-weight:600;
+}
+
+/* ป้ายเวลา (สีอ่อน) */
+.badge.text-bg-light{
+  background:#f1f5ff; color:#526293; border:1px solid #e4ebff;
+}

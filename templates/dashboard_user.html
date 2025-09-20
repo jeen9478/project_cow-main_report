@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}แดชบอร์ด - ผู้ดูแล{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+  <h4 class="mb-0">แดชบอร์ด</h4>
+
+  <div class="d-flex flex-wrap align-items-center gap-2">
+    <input type="date" id="searchDate" class="form-control" style="max-width:170px" value="{{ date_filter or '' }}">
+    <input type="number" step="0.1" min="0" id="minTemp" class="form-control" style="max-width:150px"
+           placeholder="ขั้นต่ำ °C" value="{{ min_temp or '' }}">
+    <input type="time" id="startTime" class="form-control" style="max-width:140px" value="{{ start_time or '' }}">
+    <span class="text-muted">–</span>
+    <input type="time" id="endTime" class="form-control" style="max-width:140px" value="{{ end_time or '' }}">
+    <button class="btn btn-secondary" onclick="applyFilters()">ค้นหา</button>
+    <a id="dlBtn" class="btn btn-success"
+       href="{{ url_for('download_xlsx', date=date_filter or None, min_temp=min_temp or None, start_time=start_time or None, end_time=end_time or None) }}">
+      ดาวน์โหลด Excel
+    </a>
+    <span class="badge text-bg-primary">{{ username }}</span>
+  </div>
+</div>
+
+{% if data|length == 0 %}
+  <div class="text-center text-muted py-5">
+    <div class="mb-2" style="font-size:2rem;">🔍</div>
+    <h5 class="mb-1">ไม่พบข้อมูล</h5>
+    <div class="small">ลองปรับวันที่ / อุณหภูมิต่ำสุด / ช่วงเวลา ใหม่อีกครั้ง</div>
+  </div>
+{% else %}
+  <div class="grid">
+    {% for row in data %}
+    <div class="card shadow-sm">
+      <img src="/{{ row['visible_image_path'] or row['image_path'] }}" class="card-img-top" alt="cow image">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">{{ row['temperature'] }} °C</h5>
+          <span class="badge text-bg-light">{{ row['timestamp'] }}</span>
+        </div>
+        <!-- ปุ่มดูรายละเอียด -->
+        <div class="mt-2 text-end">
+          <a href="{{ url_for('view_image', image_id=row['id']) }}" class="btn btn-sm btn-outline-primary">ดูรายละเอียด</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<script>
+function buildQuery(){
+  const d  = document.getElementById('searchDate').value.trim();
+  const mt = document.getElementById('minTemp').value.trim();
+  const st = document.getElementById('startTime').value.trim();
+  const et = document.getElementById('endTime').value.trim();
+  const p = new URLSearchParams();
+  if(d) p.set('date', d);
+  if(mt) p.set('min_temp', mt);
+  if(st && et){ p.set('start_time', st); p.set('end_time', et); }
+  return p.toString();
+}
+function applyFilters(){
+  const q = buildQuery();
+  const base = "{{ url_for('dashboard') }}";
+  window.location.href = q ? (base + "?" + q) : base;
+}
+['searchDate','minTemp','startTime','endTime'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el){ el.addEventListener('change', ()=>{
+    const q=buildQuery(); const a=document.getElementById('dlBtn');
+    a.href = q ? ("{{ url_for('download_xlsx') }}?"+q) : "{{ url_for('download_xlsx') }}";
+  });}
+});
+</script>
+{% endblock %}

@@ -1,0 +1,33 @@
+<!-- dashboard.html -->
+{% extends "base.html" %}
+{% block title %}แดชบอร์ด{% endblock %}
+
+{% block head_extra %}
+<style>
+  .card-img-top {
+    border-radius: 8px;
+    max-height: 220px;
+    object-fit: cover;
+  }
+  .card {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<h3 class="mb-4">ภาพกล้องปกติ แสดงเฉพาะวัวที่ตรวจพบอุณหภูมิสูงผิดปกติ</h3>
+<div class="row">
+  {% for row in data %}
+  <div class="col-md-4 mb-4">
+    <div class="card">
+      <img src="{{ url_for('static', filename=row.visible_image_path.split('static/')[1]) }}" class="card-img-top" alt="ภาพวัว">
+      <div class="card-body">
+        <p class="card-text"><strong>RFID:</strong> {{ row.rfid_tag }}</p>
+        <a href="{{ url_for('view_details', id=row.id) }}" class="btn btn-primary">ดูรายละเอียด</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

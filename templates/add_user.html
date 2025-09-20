@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}เพิ่มผู้ใช้{% endblock %}
+{% block content %}
+<h3 class="mb-3">เพิ่มผู้ใช้</h3>
+<form method="POST" class="card p-3 shadow-sm" style="max-width:520px">
+  <div class="mb-3">
+    <label class="form-label">ชื่อผู้ใช้</label>
+    <input class="form-control" name="username" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">รหัสผ่าน</label>
+    <input class="form-control" type="password" name="password" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">สิทธิ์</label>
+    <select class="form-select" name="role">
+      <option value="user">user</option>
+      <option value="admin">admin</option>
+    </select>
+  </div>
+  <button class="btn btn-success" type="submit">เพิ่ม</button>
+</form>
+{% endblock %}

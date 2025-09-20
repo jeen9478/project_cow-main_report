@@ -1,0 +1,15 @@
+body { background: #f5f7fb; }
+.sidebar {
+  width: 250px; min-height: 100vh;
+  background: #215e9b;  /* โทนสุภาพไม่จัดจ้าน */
+  color: #fff;
+}
+.sidebar nav a {
+  display: block; color: #fff; text-decoration: none;
+  padding: 10px 12px; border-radius: 8px; margin-bottom: 6px;
+}
+.sidebar nav a.active, .sidebar nav a:hover {
+  background: rgba(255,255,255,.15);
+}
+.content { background: #fbfdff; }
+.card img { border-radius: 8px 8px 0 0; }

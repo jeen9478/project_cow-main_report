@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}แก้ไขผู้ใช้{% endblock %}
+{% block content %}
+<h3 class="mb-3">แก้ไขผู้ใช้: {{ username }}</h3>
+<form method="POST" class="card p-3 shadow-sm" style="max-width:520px">
+  <div class="mb-3">
+    <label class="form-label">รหัสผ่านใหม่</label>
+    <input class="form-control" type="password" name="password" value="{{ user.password }}" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">สิทธิ์</label>
+    <select class="form-select" name="role">
+      <option value="user"  {% if user.role=='user' %}selected{% endif %}>user</option>
+      <option value="admin" {% if user.role=='admin' %}selected{% endif %}>admin</option>
+    </select>
+  </div>
+  <button class="btn btn-success" type="submit">บันทึก</button>
+</form>
+{% endblock %}

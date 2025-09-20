@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}กล้องเรียลไทม์{% endblock %}
+{% block content %}
+<h3 class="mb-3">📷 กล้องเรียลไทม์</h3>
+
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header fw-semibold">กล้องRaspberry (RGB)</div>
+      <div class="card-body p-2 text-center">
+        <img src="{{ pi_stream_base }}/video_feed" style="max-width:100%; border-radius:8px;" />
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header fw-semibold">กล้องอินฟราเรด MLX90640 (Thermal)</div>
+      <div class="card-body p-2 text-center">
+        <img src="{{ pi_stream_base }}/thermal_feed" style="max-width:100%; border-radius:8px;" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="small text-muted mt-3">
+</p>
+{% endblock %}
